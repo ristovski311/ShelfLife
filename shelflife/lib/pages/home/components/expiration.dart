@@ -1,0 +1,124 @@
+import 'package:flutter/material.dart';
+import 'package:shelflife/classes/models/expiration.dart';
+import 'package:shelflife/main.dart';
+import 'package:shelflife/pages/home/controller.dart';
+
+class ExpirationCardWidget extends StatelessWidget {
+  final Expiration expiration;
+  final HomeController controller;
+  const ExpirationCardWidget({
+    super.key,
+    required this.controller,
+    required this.expiration,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 16),
+      alignment: Alignment.topLeft,
+      decoration: BoxDecoration(
+        color: expiration.daysUtilExpiration() > 15
+            ? Theme.of(context).colorScheme.surface
+            : Theme.of(context).colorScheme.secondary.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+        border: Border(
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1,
+          ),
+          bottom: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1,
+          ),
+          right: BorderSide(
+            color: Theme.of(context).colorScheme.primary,
+            width: 1,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(width: 4),
+          Icon(
+            Icons.alarm,
+            size: 40,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  expiration.productName,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  expiration.productBrand,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  "${"Expiration".tr}: ${expiration.prettyPrintExpirationDate()}",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Expires in".tr,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w200,
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                expiration.daysUtilExpiration().toString(),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 2),
+              Text(
+                "days".tr,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w200,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
