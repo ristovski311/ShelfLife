@@ -30,6 +30,32 @@ class ExpirationRep {
     return rows.map((r) => Expiration.fromMap(r)).toList();
   }
 
+  Future<List<Expiration>> getShouldRemindThisYearAndMonth(
+    int year,
+    int month, {
+    int remindDaysInAdvance = 15,
+  }) async {
+    final db = await _dbHelper.database;
+    final start = DateTime(
+      year,
+      month,
+      1,
+    ).add(Duration(days: remindDaysInAdvance)).toIso8601String();
+    final end = DateTime(
+      year,
+      month + 1,
+      1,
+    ).add(Duration(days: remindDaysInAdvance)).toIso8601String();
+
+    final rows = await db.query(
+      'expirations',
+      where: 'expirationDate >= ? AND expirationDate < ?',
+      whereArgs: [start, end],
+      orderBy: 'expirationDate ASC',
+    );
+    return rows.map((r) => Expiration.fromMap(r)).toList();
+  }
+
   Future<List<Expiration>> getSoonExpiring(int maxDaysUntilExpiration) async {
     final db = await _dbHelper.database;
     final now = DateTime.now();
@@ -37,8 +63,8 @@ class ExpirationRep {
     final end = DateTime(
       now.year,
       now.month,
-      now.day + maxDaysUntilExpiration,
-    ).toIso8601String();
+      now.day,
+    ).add(Duration(days: maxDaysUntilExpiration)).toIso8601String();
 
     final rows = await db.query(
       'expirations',

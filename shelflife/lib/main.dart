@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shelflife/config/notifications.dart';
 import 'package:shelflife/config/translation.dart';
 import 'package:shelflife/pages/calendar/controller.dart';
+import 'package:shelflife/pages/navigation_bar/controller.dart';
 import 'package:shelflife/pages/navigation_bar/main_page.dart';
 import 'package:shelflife/config/theme.dart';
 import 'package:shelflife/pages/products/controller.dart';
@@ -23,7 +24,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductsController()..setup()),
-        ChangeNotifierProvider(create: (_) => SettingsController()),
+        ChangeNotifierProvider(create: (_) => NavigationBarController()),
+        ChangeNotifierProvider(create: (_) => SettingsController()..setup()),
         ChangeNotifierProvider(create: (_) => CalendarController()..setup()),
       ],
       child: MaterialApp(

@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shelflife/classes/models/expiration.dart';
+import 'package:shelflife/config/toast.dart';
 import 'package:shelflife/main.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
@@ -105,25 +106,29 @@ class NotificationService {
     );
   }
 
-  Future<void> scheduleExpirationAlarm(Expiration e) async {
+  Future<void> scheduleExpirationAlarm(
+    Expiration e,
+    int hour,
+    int minute,
+  ) async {
     final plugin = flutterLocalNotificationsPlugin;
     tz.setLocalLocation(tz.getLocation('Europe/Belgrade'));
 
     final remindDay = e.expirationDate.subtract(const Duration(days: 15));
-    final when = tz.TZDateTime(
+    var when = tz.TZDateTime(
       tz.local,
       remindDay.year,
       remindDay.month,
       remindDay.day,
-      10, // 10 in the morning
-      00,
+      hour,
+      minute,
     );
 
     if (when.isBefore(tz.TZDateTime.now(tz.local))) return;
 
     await plugin.zonedSchedule(
       id: e.id,
-      title: 'Expires in 15 days'.tr,
+      title: "${'Expires soon'.tr}!",
       body:
           '${e.productBrand} ${e.productName} ${"expires on".tr} ${e.expirationDate.day}.${e.expirationDate.month}.',
       scheduledDate: when,
@@ -139,10 +144,15 @@ class NotificationService {
     );
   }
 
-  void cancelAlarm(int id) {
+  Future<void> cancelAlarm(int id) async {
     final plugin = flutterLocalNotificationsPlugin;
     try {
-      plugin.cancel(id: id);
+      await plugin.cancel(id: id);
+      ToastService.instance.success("Canceled timer for id $id");
+    } catch (e) {
+      ToastService.instance.error(
+        "${"Failed to cancel an alarm for".tr} id $id",
+      );
     } finally {}
   }
 }

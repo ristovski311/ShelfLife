@@ -17,6 +17,6 @@ class HomeController extends ChangeNotifier {
   }
 
   List<Expiration> getSoonToExpireProductsHome() {
-    return soonToExpireProducts;
+    return soonToExpireProducts.where((e) => e.noted == false).toList();
   }
 }

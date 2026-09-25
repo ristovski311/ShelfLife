@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shelflife/classes/database/category_rep.dart';
 import 'package:shelflife/classes/database/expiration_rep.dart';
 import 'package:shelflife/classes/mock/expiration.dart';
@@ -45,6 +46,7 @@ final Map<Month, Color> monthColors = {
 class CalendarController extends ChangeNotifier {
   final _expirationRepo = ExpirationRep();
   final _categoryRepo = CategoryRep();
+  late SharedPreferences _prefs;
 
   bool isGoingForward = true;
 
@@ -56,6 +58,7 @@ class CalendarController extends ChangeNotifier {
   Future<void> setup() async {
     await _refresh();
     await _loadCategories();
+    _prefs = await SharedPreferences.getInstance();
     notifyListeners();
   }
 
@@ -64,19 +67,26 @@ class CalendarController extends ChangeNotifier {
   }
 
   Future<void> _refresh() async {
-    expirationsForSelectedMonth = await _expirationRepo.getForYearAndMonth(
-      selectedYear,
-      selectedMonth.index + 1,
-    );
+    expirationsForSelectedMonth = await _expirationRepo
+        .getShouldRemindThisYearAndMonth(selectedYear, selectedMonth.index + 1);
 
     notifyListeners();
   }
 
   Future<void> refreshCategories() => _loadCategories();
 
-  List<Expiration> getExpirationsForGivenDay(int day) {
+  List<Expiration> getExpirationsForGivenDay(
+    int day, {
+    int remindDaysInAdvance = 15,
+  }) {
     return expirationsForSelectedMonth
-        .where((e) => e.expirationDate.day == day)
+        .where(
+          (e) =>
+              (e.expirationDate
+                  .subtract(Duration(days: remindDaysInAdvance))
+                  .day ==
+              day),
+        )
         .toList();
   }
 
@@ -182,7 +192,13 @@ class CalendarController extends ChangeNotifier {
         _expirationRepo.insert(e);
       }
 
-      NotificationService.instance.scheduleExpirationAlarm(e);
+      final reminderHour = _prefs.getInt('reminder_hour') ?? 10;
+      final reminderMinute = _prefs.getInt('reminder_minute') ?? 0;
+      NotificationService.instance.scheduleExpirationAlarm(
+        e,
+        reminderHour,
+        reminderMinute,
+      );
 
       ToastService.instance.success(
         "${"Successfully created expiration for".tr} $productBrand $productName",

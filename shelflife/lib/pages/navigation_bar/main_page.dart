@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:shelflife/config/translation.dart';
 import 'package:shelflife/main.dart';
 import 'package:shelflife/pages/navigation_bar/components/navbar_fab.dart';
@@ -19,10 +20,9 @@ class NavigationBarMainPage extends StatefulWidget {
 }
 
 class _NavigationBarMainPageState extends State<NavigationBarMainPage> {
-  final controller = NavigationBarController();
-
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<NavigationBarController>();
     return Builder(
       builder: (context) {
         return ListenableBuilder(

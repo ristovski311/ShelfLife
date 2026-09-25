@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shelflife/components/illustration.dart';
 import 'package:shelflife/components/separator.dart';
 import 'package:shelflife/main.dart';
 import 'package:shelflife/pages/home/components/expiration.dart';
 import 'package:shelflife/pages/home/controller.dart';
+import 'package:shelflife/pages/navigation_bar/controller.dart';
 
 class HomeMainPage extends StatefulWidget {
   const HomeMainPage({super.key});
@@ -16,9 +18,17 @@ class _HomeMainPageState extends State<HomeMainPage> {
   final controller = HomeController();
 
   @override
+  void initState() {
+    controller.setup();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
+    final navBarController = context.watch<NavigationBarController>();
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, child) {
         return Scaffold(
           body: ListView(
             padding: EdgeInsets.all(12),
@@ -64,9 +74,12 @@ class _HomeMainPageState extends State<HomeMainPage> {
                 ...controller.getSoonToExpireProductsHome().map((e) {
                   return Padding(
                     padding: const EdgeInsets.all(4),
-                    child: ExpirationCardWidget(
-                      controller: controller,
-                      expiration: e,
+                    child: InkWell(
+                      onTap: () => navBarController.setPageIndexToCalendar(),
+                      child: ExpirationCardWidget(
+                        controller: controller,
+                        expiration: e,
+                      ),
                     ),
                   );
                 })

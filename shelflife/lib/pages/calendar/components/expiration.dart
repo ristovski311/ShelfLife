@@ -87,7 +87,6 @@ class ExpirationCardWidget extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 2),
                   Text(
                     expiration.productBrand,
                     style: TextStyle(
@@ -96,12 +95,11 @@ class ExpirationCardWidget extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(height: 2),
                   Text(
                     "${"Expiration".tr}: ${expiration.prettyPrintExpirationDate()}",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

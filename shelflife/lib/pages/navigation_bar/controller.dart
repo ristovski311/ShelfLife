@@ -11,4 +11,9 @@ class NavigationBarController extends ChangeNotifier {
     pageIndex = i;
     notifyListeners();
   }
+
+  void setPageIndexToCalendar() {
+    pageIndex = NavigationPages.calendar.index;
+    notifyListeners();
+  }
 }

@@ -78,5 +78,17 @@
     "Expiration noted successfully": "Istek roka uspešno potvrđen",
     "Expiration deleted successfully": "Istek roka uspešno obrisan",
     "Successfully created expiration for": "Uspešno kreiran istek roka za",
-    "An error has occurred": "Nastala je greška"
+    "An error has occurred": "Nastala je greška",
+    "Reminders for all expirations have been reset": "Podsetnici svih isteka su resetovani",
+    "Alarm reminder time changed to": "Vreme podsetnika na isteke je promenjeno na",
+    "Expires soon": "Uskoro ističe",
+    "Failed to cancel an alarm for": "Nije uspelo otkazivanje alarma za istek sa id",
+    "Reminder time": "Vreme podsetnika",
+    "Hours": "Sati",
+    "Minutes": "Minuti",
+    "Reset expirations reminders": "Resetuj podsetnike isteka",
+    "Reset": "Resetuj",
+    "Change reminder time": "Promena vremena podsetnika",
+    "Time": "Vreme",
+    "Change": "Promeni"
 }

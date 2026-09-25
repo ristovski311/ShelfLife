@@ -78,5 +78,17 @@
     "Expiration noted successfully": "Expiration noted successfully",
     "Expiration deleted successfully": "Expiration deleted successfully",
     "Successfully created expiration for": "Successfully created expiration for",
-    "An error has occurred": "An error has occurred"
+    "An error has occurred": "An error has occurred",
+    "Reminders for all expirations have been reset": "Reminders for all expirations have been reset",
+    "Alarm reminder time changed to": "Alarm reminder time changed to",
+    "Expires soon": "Expires soon",
+    "Failed to cancel an alarm for": "Failed to cancel an alarm for",
+    "Reminder time": "Reminder time",
+    "Hours": "Hours",
+    "Minutes": "Minutes",
+    "Reset expirations reminders": "Reset expirations reminders",
+    "Reset": "Reset",
+    "Change reminder time": "Change reminder time",
+    "Time": "Time",
+    "Change": "Change"
 }
